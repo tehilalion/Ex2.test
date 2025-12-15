@@ -1,6 +1,10 @@
 public class Index2D implements Pixel2D {
+    private int x;
+    private int y;
+
     public Index2D(int w, int h) {
-        ;
+        this.x=w;
+        this.y=h;
     }
     public Index2D(Pixel2D other) {
         ;
