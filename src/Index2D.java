@@ -6,19 +6,20 @@ public class Index2D implements Pixel2D {
         this.x=w;
         this.y=h;
     }
+    // copy constructor
     public Index2D(Pixel2D other) {
         ;
     }
     @Override
     public int getX() {
 
-        return 0;
+        return this.x;
     }
 
     @Override
     public int getY() {
 
-        return 0;
+        return this.y;
     }
 
     @Override
