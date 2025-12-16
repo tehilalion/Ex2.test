@@ -43,7 +43,7 @@ public class Index2D implements Pixel2D {
     @Override
     public String toString() {
         String ans = null;
-
+        ans= this.x+","+this.y;
         return ans;
     }
 
