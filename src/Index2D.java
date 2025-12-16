@@ -21,7 +21,7 @@ public class Index2D implements Pixel2D {
 
         return this.y;
     }
-
+    // throw exception
     @Override
     public double distance2D(Pixel2D p2) {
 
