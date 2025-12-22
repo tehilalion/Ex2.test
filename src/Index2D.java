@@ -30,7 +30,7 @@ public class Index2D implements Pixel2D {
     // Throws runtime exception if null
     @Override
     public double distance2D(Pixel2D p2) {
-        double dx = this.x - p2.getX();
+        double dx = this.x- p2.getX();
         double dy = this.y - p2.getY();
         if (p2==null) {
             throw new RuntimeException("p2 is null");
@@ -42,15 +42,19 @@ public class Index2D implements Pixel2D {
 
     @Override
     public String toString() {
-        String ans = null;
-        ans= this.x+","+this.y;
+        //String ans = null;
+      String ans= this.x+","+this.y;
         return ans;
     }
 
     @Override
     public boolean equals(Object p) {
         boolean ans = true;
+        public boolean equals(Object p)
+        {
+            if(p==null || !(p instanceof Pixel2D)) {return false;}
+            Pixel2D p2 = (Pixel2D)p;
+            return ( (this.x==p2.getX()) && (this.y==p2.getY()));
+        }
 
-        return ans;
-    }
 }

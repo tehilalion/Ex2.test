@@ -16,16 +16,19 @@ public class Map implements Map2D, Serializable{
 	 * @param v
 	 */
 	public Map(int w, int h, int v) {init(w, h, v);}
-	/**
+
+    /**
 	 * Constructs a square map (size*size).
 	 * @param size
-	 */
+     */
+
 	public Map(int size) {this(size,size, 0);}
 	
 	/**
 	 * Constructs a map from a given 2D array.
 	 * @param data
 	 */
+
 	public Map(int[][] data) {
 		init(data);
 	}
