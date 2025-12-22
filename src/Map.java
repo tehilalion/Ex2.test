@@ -7,6 +7,9 @@ import java.io.Serializable;
  *
  */
 public class Map implements Map2D, Serializable{
+    private int[][] map;
+    private int w;  // width
+    private int h;  // height
 
     // edit this class below
 	/**
@@ -34,29 +37,52 @@ public class Map implements Map2D, Serializable{
 	}
 	@Override
 	public void init(int w, int h, int v) {
-
+        if (w<=0  || h<=0)
+            throw new RuntimeException("Invalid width or height");
+        this.w=w
+        this.h=h
+        map= new int [h][w];
+        for (int i=0; i<h; i=i+1) {
+            for (int j=0; j<w; j=j+1) {
+                map[i][j]=v;
+            }
+        }
 	}
 	@Override
 	public void init(int[][] arr) {
-
+        if   (arr==null || arr.length==0)
+            throw new RuntimeException("Invalid input array");
+        int c= arr[0].length;
+        if (c==0) {
+            throw new RuntimeException("Invalid Row Input");
+        }
+        for (int i=1; i<arr.length; i=i+1) {
+            if arr[i].length != c {
+                throw new RuntimeException("Ragged array");
+            }
+        }
 	}
 	@Override
 	public int[][] getMap() {
-		int[][] ans = null;
-
-		return ans;
+        if (map==null) return null;
+        int h= map.length;
+        int w= map[0].length;
+        int [][]copy= new int [h][w];
+        for (int i=0; i<h; i=i+1) {
+            for (int j=0; j<w; j=j+1) {
+                copy [i][j]= map [i][j];
+            }
+        }
+		return copy;
 	}
+
 	@Override
 	public int getWidth() {
-        int ans = -1;
-
-        return ans;
+       return this.w;
     }
 	@Override
 	public int getHeight() {
-        int ans = -1;
-
-        return ans;
+        return this.h;
     }
 	@Override
 	public int getPixel(int x, int y) {
