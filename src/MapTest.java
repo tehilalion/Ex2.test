@@ -33,6 +33,15 @@ class MapTest {
         _m1.init(_map_3_3);
         assertEquals(_m0, _m1);
     }
+
+    @Test
+    void testIsInside() {
+        // Assuming a 10x10 map
+        Index2D inside = new Index2D(5, 5);
+        Index2D edge = new Index2D(0, 0);
+        Index2D outsideX = new Index2D(11, 5);
+        Index2D outsideY = new Index2D(5, -1);
+
     @Test
     void testEquals() {
         assertEquals(_m0,_m1);

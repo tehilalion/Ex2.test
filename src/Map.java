@@ -96,29 +96,47 @@ public class Map implements Map2D, Serializable{
 	}
 	@Override // change the value of xy
 	public void setPixel(int x, int y, int v) {
+        map[y][x] = v;
 
     }
 	@Override
 	public void setPixel(Pixel2D p, int v) {
+        map[p.getY()][p.getX()] = v;
+
 
 	}
 
     @Override // is the point in the radius check by bigger than 0 and smaller than the length
     public boolean isInside(Pixel2D p) {
-        boolean ans = true;
+        boolean ans = false;
+        if (p.getY()>=0 && p.getX()>=0
+                && p.getY()<map.length && p.getX()<map[0].length ){
+            ans = true;
+        }
 
         return ans;
     }
 
     @Override
     public boolean sameDimensions(Map2D p) {
-        boolean ans = false;
+        boolean ans = true;
+        if (this.getWidth()!=p.getWidth() && this.getHeight()!=p.getHeight()) {
+            return false;
+        }
 
         return ans;
     }
 
     @Override // check the sameDimesions
     public void addMap2D(Map2D p) {
+        (if !sameDimensions()){
+            throw new RuntimeException("Invalid dimensions");
+        }
+        for (int y=0; y<this.getHeight(); y=y+1) {
+            for (int x=0; x<this.getWidth(); x=x+1) {
+                map[y][x]=map[y][x]+p.getPixel(x, y);
+            }
+        }
 
     }
 
@@ -127,7 +145,7 @@ public class Map implements Map2D, Serializable{
 
     }
 
-    @Override
+    @Override//  find the pixel in the new picture find the matching pixel in the given, return the value of the given in the new
     public void rescale(double sx, double sy) {
 
     }
