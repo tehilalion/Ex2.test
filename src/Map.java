@@ -8,8 +8,6 @@ import java.io.Serializable;
  */
 public class Map implements Map2D, Serializable{
     private int[][] map;
-    private int w;  // width
-    private int h;  // height
 
     // edit this class below
 	/**
@@ -35,12 +33,11 @@ public class Map implements Map2D, Serializable{
 	public Map(int[][] data) {
 		init(data);
 	}
+
 	@Override
 	public void init(int w, int h, int v) {
         if (w<=0  || h<=0)
             throw new RuntimeException("Invalid width or height");
-        this.w=w
-        this.h=h
         map= new int [h][w];
         for (int i=0; i<h; i=i+1) {
             for (int j=0; j<w; j=j+1) {
@@ -78,25 +75,26 @@ public class Map implements Map2D, Serializable{
 
 	@Override
 	public int getWidth() {
-       return this.w;
+
+       return  map[0].length;
     }
 	@Override
 	public int getHeight() {
-        return this.h;
+        return map.length;
     }
 	@Override
 	public int getPixel(int x, int y) {
-        int ans = -1;
+        int ans = map[y][x];
 
         return ans;
     }
 	@Override
 	public int getPixel(Pixel2D p) {
-        int ans = -1;
+        int ans = map[p.getY()][p.getX()];
 
         return ans;
 	}
-	@Override
+	@Override // change the value of xy
 	public void setPixel(int x, int y, int v) {
 
     }
@@ -105,7 +103,7 @@ public class Map implements Map2D, Serializable{
 
 	}
 
-    @Override
+    @Override // is the point in the radius check by bigger than 0 and smaller than the length
     public boolean isInside(Pixel2D p) {
         boolean ans = true;
 
@@ -119,12 +117,12 @@ public class Map implements Map2D, Serializable{
         return ans;
     }
 
-    @Override
+    @Override // check the sameDimesions
     public void addMap2D(Map2D p) {
 
     }
 
-    @Override
+    @Override //
     public void mul(double scalar) {
 
     }
