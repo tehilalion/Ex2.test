@@ -6,7 +6,11 @@ public class Index2D implements Pixel2D {
         this.x=w;
         this.y=h;
     }
-    // copy constructor
+
+    /** copy constructor
+     *
+     * @param other
+     */
     public Index2D(Pixel2D other) {
         if (other == null) {
             throw new IllegalArgumentException("Pixel2D is null");
@@ -14,6 +18,7 @@ public class Index2D implements Pixel2D {
         this.x = other.getX();
         this.y = other.getY();
     }
+
 
     @Override
     public int getX() {

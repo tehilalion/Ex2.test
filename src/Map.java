@@ -1,4 +1,6 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+
 /**
  * This class represents a 2D map (int[w][h]) as a "screen" or a raster matrix or maze over integers.
  * This is the main class needed to be implemented.
@@ -160,7 +162,7 @@ public class Map implements Map2D, Serializable{
         for( int x=0; x<this.getWidth(); x=x+1 ) {
             for( int y=0; y<this.getHeight(); y=y+1 ) {
                Pixel2D p1=new Index2D(x,y);
-                if (center.distance2D(p1)<= rad){
+                if (center.distance2D(p1)<rad){
                     this.setPixel(x,y,color);
                 }
             }
@@ -170,6 +172,8 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void drawLine(Pixel2D p1, Pixel2D p2, int color) {
+
+
 
     }
 
@@ -190,27 +194,87 @@ public class Map implements Map2D, Serializable{
 	 * https://en.wikipedia.org/wiki/Flood_fill
 	 */
 	public int fill(Pixel2D xy, int new_v,  boolean cyclic) {
-		int ans = -1;
+        int old_v= getPixel(xy)
+                if (old_v==new_v) return 0;
+		ArrayList<Pixel2D> q= new ArrayList<Pixel2D>();
+        q.add(xy);
+        int count= 0;
 
-		return ans;
+        while (!q.isEmpty()){
+           Pixel2D c=q.remove(0);
+            if( getPixel(c)== old_v){
+                setPixel(c,new_v);
+                count++
+                        int [][] dir= {{1,0},{-1,0},{0,1},{0,-1}};
+                for (int []step:dir){
+                    int nx = c.getX() + step[0]
+                    int ny = c.getY() + step[1]
+                            if (cyclic) {
+                                nx =(nx + getWidth()) % getWidth();
+                                ny =(ny + getHeight()) % getHeight();
+                            }
+
+                    if (nx >= 0 && nx < getWidth() && ny >= 0 && ny < getHeight()){
+                        if (!visited[nx][ny] && getPixel(new Index2D(nx, ny)) == old_v) {
+                            visited[nx][ny] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+		return count;
 	}
+    public int fill(Pixel2D xy, int new_v, boolean cyclic) {
+        int old_v = getPixel(xy);
+        if (old_v == new_v)
+            return 0;
 
-	@Override
-	/**
-	 * BFS like shortest the computation based on iterative raster implementation of BFS, see:
-	 * https://en.wikipedia.org/wiki/Breadth-first_search
-	 */
-	public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
-		Pixel2D[] ans = null;  // the result.
-
-		return ans;
-	}
-    @Override
-    public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
-        Map2D ans = null;  // the result.
-
-        return ans;
+    ArrayList<Pixel2D> q= new ArrayList<Pixel2D>();
+    boolean[][] visited = new boolean[getWidth()][getHeight()];
+    q.add(xy); visited[xy.getX()][xy.getY()]=true;
+    int count= 0;
+    while (!q.isEmpty()){
+        Pixel2D c=q.remove(0);
+        if( getPixel(c)== old_v){
+            setPixel(c,new_v);
+            count++
+            int [][] dir= {{1,0},{-1,0},{0,1},{0,-1}};
+            for (int []step:dir){
+                int nx = c.getX() + step[0]
+                int ny = c.getY() + step[1]
+                if (cyclic) {
+                    nx =(nx + getWidth()) % getWidth();
+                    ny =(ny + getHeight()) % getHeight();
+                }
+                if (nx >= 0 && nx < getWidth() && ny >= 0 && ny < getHeight()) {
+                    if (!visited[nx][ny] && getPixel(new Index2D(nx, ny)) == old_v) {
+                        visited[nx][ny] = true;
+                        q.add(new Index2D(nx, ny));
+                    }
+                }
+            }
+        }
     }
-	////////////////////// Private Methods ///////////////////////
+        return count;
+    }
+                        @Override
+                        /**
+                         * BFS like shortest the computation based on iterative raster implementation of BFS, see:
+                         * https://en.wikipedia.org/wiki/Breadth-first_search
+                         */
+                        public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
+                            Pixel2D[] ans = null;  // the result.
 
-}
+                            return ans;
+                        }
+                        @Override
+                        public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
+                            Map2D ans = null;  // the result.
+
+                            return ans;
+                        }
+                        ////////////////////// Private Methods ///////////////////////
+
+                    }
+                }

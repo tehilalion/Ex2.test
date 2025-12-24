@@ -1,10 +1,33 @@
 import org.junit.jupiter.api.Test;
 
-public class Index2DTest {
-    import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    class Index2DTest {
+public class Index2DTest {
+    @Test
+    void getX() {
+    }
+
+    @Test
+    void getY() {
+    }
+
+    @Test
+    void distance2D() {
+        Index2D p1 = new Index2D(0, 0);
+        Index2D p2 = new Index2D(3, 4);
+        double distance = p1.distance2D(p2);
+        assertEquals(distance, 5, 0.00001);
+    }
+
+    @Test
+    void testToString() {
+    }
+
+    @Test
+    void testEquals() {
+    }
+
+
 
         @Test
         void testConstructorAndGetters() {
@@ -28,8 +51,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
         @Test
         void testDistance2D() {
-            Index2D p1 = new Index2D(0, 0);
-            Index2D p2 = new Index2D(3, 4);
+
 
             // Distance should be sqrt(3^2 + 4^2) = 5
             double distance = p1.distance2D(p2);
@@ -65,4 +87,4 @@ import static org.junit.jupiter.api.Assertions.*;
             assertNotEquals(p1, "a string", "Should not be equal to different types");
         }
     }
-}
+
