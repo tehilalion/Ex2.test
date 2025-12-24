@@ -154,7 +154,20 @@ public class Map implements Map2D, Serializable{
 
     @Override//  find the pixel in the new picture find the matching pixel in the given, return the value of the given in the new
     public void rescale(double sx, double sy) {
+        int newW= (int)(sx*getWidth());
+          int newH= (int)(sy*getHeight());
 
+          int [][] temp= new int [newW][newH];
+        for (int i=0; i<newW; i=i+1) {
+            for (int j=0; j<newH; j=j+1) {
+                int oldx=(int)(i/sx);
+                int oldy=(int)(j/sy);
+                if (oldx<getWidth()&&oldy<getHeight()) {
+                temp [i][j]= getPixel(oldx, oldy);
+                }
+            }
+        }
+        this.init(temp);
     }
 
     @Override
@@ -214,6 +227,15 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void drawRect(Pixel2D p1, Pixel2D p2, int color) {
+        int x1 = Math.min(p1.getX(), p2.getX());
+        int x2 = Math.max(p1.getX(), p2.getX());
+        int y1 = Math.min(p1.getY(), p2.getY());
+        int y2 = Math.max(p1.getY(), p2.getY());
+        for ( int x=x1; x<=x2; x=x+1 ) {
+            for ( int y=y1; y<=y2; y=y+1 ) {
+                setPixel(new Index2D(x, y), color);
+            }
+        }
 
     }
 
