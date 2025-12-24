@@ -197,7 +197,9 @@ public class Map implements Map2D, Serializable{
         int old_v= getPixel(xy)
                 if (old_v==new_v) return 0;
 		ArrayList<Pixel2D> q= new ArrayList<Pixel2D>();
+        boolean[][] visited = new boolean[getWidth()][getHeight()];
         q.add(xy);
+        visited[xy.getX()][xy.getY()]=true;
         int count= 0;
 
         while (!q.isEmpty()){
@@ -225,6 +227,7 @@ public class Map implements Map2D, Serializable{
 
 		return count;
 	}
+
     public int fill(Pixel2D xy, int new_v, boolean cyclic) {
         int old_v = getPixel(xy);
         if (old_v == new_v)
@@ -258,23 +261,25 @@ public class Map implements Map2D, Serializable{
     }
         return count;
     }
-                        @Override
-                        /**
-                         * BFS like shortest the computation based on iterative raster implementation of BFS, see:
-                         * https://en.wikipedia.org/wiki/Breadth-first_search
-                         */
-                        public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
-                            Pixel2D[] ans = null;  // the result.
 
-                            return ans;
-                        }
-                        @Override
-                        public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
-                            Map2D ans = null;  // the result.
+    @Override
+    /**
+     * BFS like shortest the computation based on iterative raster implementation of BFS, see:
+     * https://en.wikipedia.org/wiki/Breadth-first_search
+     */
+    public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
+        Pixel2D[] ans = null;  // the result.
 
-                            return ans;
-                        }
-                        ////////////////////// Private Methods ///////////////////////
+        return ans;
+    }
 
-                    }
-                }
+    @Override
+    public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
+        Map2D ans = null;  // the result.
+
+        return ans;
+    }
+    ////////////////////// Private Methods ///////////////////////
+
+}
+}
