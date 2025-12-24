@@ -171,11 +171,46 @@ public class Map implements Map2D, Serializable{
     }
 
     @Override
-    public void drawLine(Pixel2D p1, Pixel2D p2, int color) {
-
-
-
+    private void drawHorizontalLine(Pixel2D p1, Pixel2D p2, int color) {
+        double m = (double)(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+        for (int x = p1.getX(); x <= p2.getX(); x++) {
+            double exactY = p1.getY() + m * (x - p1.getX());
+            int roundedY = (int) Math.round(exactY);
+            setPixel(new Index2D(x, roundedY), color);
+        }
     }
+    private void drawVerticalLine(Pixel2D p1, Pixel2D p2, int color) {
+        double m2= (double)(p2.getX() - p1.getX()) / (p2.getY() - p1.getY());
+        for (int y = p1.getY(); y <= p2.getY(); y++) {
+            double exactX = p1.getX() + m2 * (y - p1.getY());
+            int roundedX = (int) Math.round(exactX);
+            setPixel(new Index2D(roundedX, y), color);
+        }
+    }
+
+    public void drawLine(Pixel2D p1, Pixel2D p2, int newcolor) {
+        int dx = Math.abs(p2.getX() - p1.getX());
+        int dy = Math.abs(p2.getY() - p1.getY());
+        if (p1.getX() == p2.getX() && p1.getY() == p2.getY()) {
+            setPixel(p1, newcolor);
+            return;
+        }
+        if (dx >= dy) {
+            if (p1.getX() < p2.getX()) {
+                drawHorizontalLine(p1, p2, newcolor);
+            } else {
+                drawHorizontalLine(p2, p1, newcolor);
+            }
+        }
+            else{
+                if (p1.getY() < p2.getY()) {
+                    drawVerticalLine(p1, p2, newcolor);
+                } else {
+                    drawVerticalLine(p2, p1, newcolor);
+                }
+            }
+        }
+
 
     @Override
     public void drawRect(Pixel2D p1, Pixel2D p2, int color) {
@@ -193,46 +228,10 @@ public class Map implements Map2D, Serializable{
 	 * Fills this map with the new color (new_v) starting from p.
 	 * https://en.wikipedia.org/wiki/Flood_fill
 	 */
-	public int fill(Pixel2D xy, int new_v,  boolean cyclic) {
-        int old_v= getPixel(xy)
-                if (old_v==new_v) return 0;
-		ArrayList<Pixel2D> q= new ArrayList<Pixel2D>();
-        boolean[][] visited = new boolean[getWidth()][getHeight()];
-        q.add(xy);
-        visited[xy.getX()][xy.getY()]=true;
-        int count= 0;
-
-        while (!q.isEmpty()){
-           Pixel2D c=q.remove(0);
-            if( getPixel(c)== old_v){
-                setPixel(c,new_v);
-                count++
-                        int [][] dir= {{1,0},{-1,0},{0,1},{0,-1}};
-                for (int []step:dir){
-                    int nx = c.getX() + step[0]
-                    int ny = c.getY() + step[1]
-                            if (cyclic) {
-                                nx =(nx + getWidth()) % getWidth();
-                                ny =(ny + getHeight()) % getHeight();
-                            }
-
-                    if (nx >= 0 && nx < getWidth() && ny >= 0 && ny < getHeight()){
-                        if (!visited[nx][ny] && getPixel(new Index2D(nx, ny)) == old_v) {
-                            visited[nx][ny] = true;
-                        }
-                    }
-                }
-            }
-        }
-
-		return count;
-	}
-
     public int fill(Pixel2D xy, int new_v, boolean cyclic) {
         int old_v = getPixel(xy);
         if (old_v == new_v)
             return 0;
-
     ArrayList<Pixel2D> q= new ArrayList<Pixel2D>();
     boolean[][] visited = new boolean[getWidth()][getHeight()];
     q.add(xy); visited[xy.getX()][xy.getY()]=true;
