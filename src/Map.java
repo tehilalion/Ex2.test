@@ -142,7 +142,12 @@ public class Map implements Map2D, Serializable{
 
     @Override //
     public void mul(double scalar) {
-
+        for (int i = 0; i<this.getHeight(); i=i+1) {
+            for (int j = 0; j<this.getWidth(); j=j+1) {
+                int v= getPixel(j,i);
+                setPixel(j,i,(int)(v*scalar));
+            }
+        }
     }
 
     @Override//  find the pixel in the new picture find the matching pixel in the given, return the value of the given in the new
@@ -152,6 +157,14 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public void drawCircle(Pixel2D center, double rad, int color) {
+        for( int x=0; x<this.getWidth(); x=x+1 ) {
+            for( int y=0; y<this.getHeight(); y=y+1 ) {
+               Pixel2D p1=new Index2D(x,y);
+                if (center.distance2D(p1)<= rad){
+                    this.setPixel(x,y,color);
+                }
+            }
+        }
 
     }
 
