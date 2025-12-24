@@ -241,10 +241,30 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public boolean equals(Object ob) {
-        boolean ans = false;
-
-        return ans;
+        if (this == ob) {
+            return true;
+        }
+        if(ob==null || !(ob instanceof  Map2D)) {
+            return false;
+        }
+        Map2D other = (Map2D) ob;
+        if (this.getWidth()!=other.getWidth()) || this.getHeight()! =other.getHeight()){
+    return false;
     }
+        for (int i = 0; i < getWidth(); i++) {
+            for (int j = 0; j < getHeight(); j++) {
+                if (this.getPixel(i, j) != other.getPixel(i, j)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+
+
 	@Override
 	/** 
 	 * Fills this map with the new color (new_v) starting from p.
