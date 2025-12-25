@@ -322,7 +322,7 @@ public class Map implements Map2D, Serializable{
                            nY = (nY + getHeight()) % getHeight();
                        }
                        if (isInside(nX, nY) && distMap.getPixel(nX, nY) == i - 1) {
-                           temp = new Pixel2D(nX, nY);
+                           temp = new Index2D(nX, nY);
                            break;
                        }
                    }
