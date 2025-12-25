@@ -52,11 +52,11 @@ public class Map implements Map2D, Serializable{
         if   (arr==null || arr.length==0)
             throw new RuntimeException("Invalid input array");
         int c= arr[0].length;
-        if (c==0) {
+        if (c==0)
             throw new RuntimeException("Invalid Row Input");
-        }
+
         for (int i=1; i<arr.length; i=i+1) {
-            if arr[i].length != c {
+            if (arr[i].length != c) {
                 throw new RuntimeException("Ragged array");
             }
         }
@@ -107,6 +107,9 @@ public class Map implements Map2D, Serializable{
 
 
 	}
+    public boolean isInside(int x, int y) {
+        return x >= 0 && y >= 0 && x < getWidth() && y < getHeight();
+    }
 
     @Override // is the point in the radius check by bigger than 0 and smaller than the length
     public boolean isInside(Pixel2D p) {
@@ -131,9 +134,9 @@ public class Map implements Map2D, Serializable{
 
     @Override // check the sameDimesions
     public void addMap2D(Map2D p) {
-        (if !sameDimensions()){
+        if (!sameDimensions(p))
             throw new RuntimeException("Invalid dimensions");
-        }
+
         for (int y=0; y<this.getHeight(); y=y+1) {
             for (int x=0; x<this.getWidth(); x=x+1) {
                 map[y][x]=map[y][x]+p.getPixel(x, y);
@@ -183,7 +186,7 @@ public class Map implements Map2D, Serializable{
 
     }
 
-    @Override
+
     private void drawHorizontalLine(Pixel2D p1, Pixel2D p2, int color) {
         double m = (double)(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
         for (int x = p1.getX(); x <= p2.getX(); x++) {
@@ -200,7 +203,7 @@ public class Map implements Map2D, Serializable{
             setPixel(new Index2D(roundedX, y), color);
         }
     }
-
+    @Override
     public void drawLine(Pixel2D p1, Pixel2D p2, int newcolor) {
         int dx = Math.abs(p2.getX() - p1.getX());
         int dy = Math.abs(p2.getY() - p1.getY());
@@ -241,24 +244,19 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public boolean equals(Object ob) {
-        if (this == ob) {
+        if (this == ob)
             return true;
-        }
-        if(ob==null || !(ob instanceof  Map2D)) {
+        if(ob==null || !(ob instanceof  Map2D))
             return false;
-        }
         Map2D other = (Map2D) ob;
-        if (this.getWidth()!=other.getWidth()) || this.getHeight()! =other.getHeight()){
+        if (this.getWidth()!=other.getWidth()|| this.getHeight()!= other.getHeight())
     return false;
-    }
         for (int i = 0; i < getWidth(); i++) {
             for (int j = 0; j < getHeight(); j++) {
-                if (this.getPixel(i, j) != other.getPixel(i, j)) {
+                if (this.getPixel(i, j) != other.getPixel(i, j))
                     return false;
                 }
-            }
         }
-
         return true;
     }
 
@@ -274,31 +272,28 @@ public class Map implements Map2D, Serializable{
         int old_v = getPixel(xy);
         if (old_v == new_v)
             return 0;
-    ArrayList<Pixel2D> q= new ArrayList<Pixel2D>();
+    ArrayList<Pixel2D> q= new ArrayList<>();
     boolean[][] visited = new boolean[getWidth()][getHeight()];
     q.add(xy); visited[xy.getX()][xy.getY()]=true;
     int count= 0;
-    while (!q.isEmpty()){
+        int [][] dir= {{1,0},{-1,0},{0,1},{0,-1}};
+        while (!q.isEmpty()){
         Pixel2D c=q.remove(0);
-        if( getPixel(c)== old_v){
             setPixel(c,new_v);
-            count++
-            int [][] dir= {{1,0},{-1,0},{0,1},{0,-1}};
+            count++;
             for (int []step:dir){
-                int nx = c.getX() + step[0]
-                int ny = c.getY() + step[1]
+                int nx = c.getX() + step[0];
+                int ny = c.getY() + step[1];
                 if (cyclic) {
                     nx =(nx + getWidth()) % getWidth();
                     ny =(ny + getHeight()) % getHeight();
                 }
-                if (nx >= 0 && nx < getWidth() && ny >= 0 && ny < getHeight()) {
-                    if (!visited[nx][ny] && getPixel(new Index2D(nx, ny)) == old_v) {
+                    if (isInside(nx,ny) && !visited[nx][ny] && getPixel(nx, ny) == old_v) {
                         visited[nx][ny] = true;
                         q.add(new Index2D(nx, ny));
                     }
-                }
+
             }
-        }
     }
         return count;
     }
@@ -309,18 +304,69 @@ public class Map implements Map2D, Serializable{
      * https://en.wikipedia.org/wiki/Breadth-first_search
      */
     public Pixel2D[] shortestPath(Pixel2D p1, Pixel2D p2, int obsColor, boolean cyclic) {
-        Pixel2D[] ans = null;  // the result.
+       Map2D distMap= allDistance(p1,obsColor,cyclic);
+       int dist = distMap.getPixel(p2.getX(), p2.getY());
+       if (dist == -1) return null;
+       Pixel2D[] shortest = new Pixel2D[dist+1];
+       Pixel2D temp=p2;
+       int[] dx={1,-1,0,0};
+       int[] dy={0,0,1,-1};
+               for (int i=dist; i>=0; i--){
+                   shortest[i]= temp;
+               if (i>0) {
+                   for (int j = 0; j < dx.length; j++) {
+                       int nX = temp.getX() + dx[j];
+                       int nY = temp.getY() + dy[j];
+                       if (cyclic) {
+                           nX = (nX + getWidth()) % getWidth();
+                           nY = (nY + getHeight()) % getHeight();
+                       }
+                       if (isInside(nX, nY) && distMap.getPixel(nX, nY) == i - 1) {
+                           temp = new Pixel2D(nX, nY);
+                           break;
+                       }
+                   }
 
-        return ans;
+               }
+               }
+               return shortest;
+
     }
 
     @Override
     public Map2D allDistance(Pixel2D start, int obsColor, boolean cyclic) {
-        Map2D ans = null;  // the result.
+        Map2D distMap = new Map(this.getWidth(),this.getHeight(),-1);
+        if (start == null) {
+            throw new RuntimeException("invalid start");
+        }
+        distMap.setPixel(start.getX(), start.getY(), 0);
+        ArrayList<Pixel2D> q= new ArrayList<Pixel2D>();
+        q.add(start);
+        int [] dx={1,-1,0,0}; //changes in x
+        int [] dy= {0,0,1,-1};// changes in y
 
-        return ans;
+        while (!q.isEmpty()){
+            Pixel2D c =q.remove(0);
+            int currentDis= distMap.getPixel(c.getX(), c.getY());
+
+            for (int i=0;i< dx.length;i=i+1) {
+                int nX = c.getX() + dx[i];
+                int nY = c.getY() + dy[i];
+                if (cyclic) {
+                    nX = (nX + getWidth()) % getWidth();
+                    nY = (nY + getHeight()) % getHeight();
+                }
+                if (isInside(nX, nY)) {
+                    if (this.getPixel(nX, nY) != obsColor && distMap.getPixel(nX, nY) == -1) {
+                        distMap.setPixel(nX, nY, currentDis+1);
+                        q.add(new Index2D(nX, nY));
+
+                    }
+                }
+            }
+
+            }
+        return distMap;
     }
-    ////////////////////// Private Methods ///////////////////////
 
-}
 }
