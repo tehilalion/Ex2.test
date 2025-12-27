@@ -8,9 +8,33 @@
  *
  */
 
+
 public class Ex2_GUI {
+    /**
+     * this method translates the data into a picture.
+     * we do this by first finding the width and height of the map
+     * then we set up our picture and the coordinates
+     * we use our get pixel function in order to fill our map with the pixel values.
+     * we set our color
+     * then we draw our pixels
+     * @param map
+     */
     public static void drawMap(Map2D map) {
-        //
+        if (map == null) return;
+        int w = map.getWidth();
+        int h = map.getHeight();
+        StdDraw.setCanvasSize(600, 600);
+        StdDraw.setXscale(0, w);
+        StdDraw.setYscale(0, h);
+        StdDraw.enableDoubleBuffering();
+        for (int x = 0; x < w; x++) {
+            for (int y = 0; y < h; y++) {
+                int v= map.getPixel(x, y);
+                StdDraw.setPenColor(new java.awt.Color(v));
+                StdDraw.filledSquare(x + 0.5, y + 0.5, 0.5);
+            }
+        }
+        StdDraw.show();
     }
 
     /**

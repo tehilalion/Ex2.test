@@ -47,20 +47,30 @@ public class Map implements Map2D, Serializable{
             }
         }
 	}
-	@Override
+
+
+
+    @Override
 	public void init(int[][] arr) {
         if   (arr==null || arr.length==0)
             throw new RuntimeException("Invalid input array");
+        int h = arr.length;
         int c= arr[0].length;
         if (c==0)
             throw new RuntimeException("Invalid Row Input");
 
-        for (int i=1; i<arr.length; i=i+1) {
-            if (arr[i].length != c) {
+        for (int i=1; i<h; i=i+1) {
+            if (arr[i].length != c)
                 throw new RuntimeException("Ragged array");
-            }
         }
-	}
+                map = new int[h][c];
+                for (int y = 0; y < h; y++){
+                    for (int x = 0; x < c; x++) {
+                        map[y][x] = arr[y][x];
+                    }
+                }
+        }
+
 	@Override
 	public int[][] getMap() {
         if (map==null) return null;
