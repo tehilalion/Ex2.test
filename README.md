@@ -14,7 +14,9 @@ l / r / c: Draw Lines, Rectangles, or Circles (requires two mouse clicks).
 a / d: Save the current map to map.txt or load it back.
 
 The picture bellow shows an example of an StdDraw implemention of these fuctions:
+show the path i did manually from start to end-
+<img width="515" height="534" alt="צילום מסך 2025-12-28 200011" src="https://github.com/user-attachments/assets/abcd7628-728a-4bee-b810-e6b54daca3f4" />
+implements all functions-
 
-
-
+<img width="686" height="756" alt="צילום מסך 2025-12-28 200537" src="https://github.com/user-attachments/assets/cea237a3-bb9b-45cd-afee-0c2b549739e8" />
 
