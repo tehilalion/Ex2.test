@@ -49,7 +49,10 @@ public class Map implements Map2D, Serializable{
 	}
 
 
-
+    /**
+     *
+     * @param arr a 2D int array.
+     */
     @Override
 	public void init(int[][] arr) {
         if   (arr==null || arr.length==0)

@@ -1,8 +1,6 @@
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Scanner;
+
 
 /**
  * Intro2CS_2026A
@@ -37,7 +35,7 @@ public class Ex2_GUI {
         int w = map.getWidth();
         int h = map.getHeight();
 
-         StdDraw.setCanvasSize(30, 30);
+         StdDraw.setCanvasSize(300, 300);
          StdDraw.setXscale(0, w);
          StdDraw.setYscale(0, h);
          StdDraw.enableDoubleBuffering();
@@ -67,85 +65,143 @@ public class Ex2_GUI {
         StdDraw.show();
     }
 
-    /** this saves our map to test file
+    /** this saves a map to test file
      * @param mapFileName
      * @return
      */
     public static Map2D loadMap(String mapFileName) {
-            try {
-                FileReader Map2D = new FileReader(mapFileName);
-                Scanner sc = new Scanner(Map2D);
-                sc.useDelimiter(",|\\s+");
+        Map2D ans=null;
+        try {
+            FileReader fr = new FileReader(mapFileName);
+            Scanner sc = new Scanner(fr);
+            sc.useDelimiter(",|\\s+");
 
-                int w = sc.nextInt();
-                int h = sc.nextInt();
+            int w = sc.nextInt();
+            int h = sc.nextInt();
 
-                Map2D ans = new Map(w, h,0);
+            ans = new Map(w, h, 0);
 
-                for (int y = 0; y < h; y++) {
-                    for (int x = 0; x < w; x++) {
-                        if (sc.hasNextInt()) {
-                            ans.setPixel(x, y, sc.nextInt());
-                        }
+            for (int y = 0; y < h; y++) {
+                for (int x = 0; x < w; x++) {
+                    if (sc.hasNextInt()) {
+                        ans.setPixel(x, y, sc.nextInt());
                     }
                 }
-                sc.close();
-                return ans;
-
-            } catch (FileNotFoundException) {
-                System.err.println("File not found: " + mapFileName);
-                return null;
             }
+            sc.close();
+
+        } catch (IOException e) {
+            System.err.println("Error loading map: " + e.getMessage());
         }
+        return ans;
+    }
 
 
     /**
-     *
+     *this saves OUR map to test file.
      * @param map
      * @param mapFileName
      */
     public static void saveMap(Map2D map, String mapFileName) {
+        try {
+            FileWriter map2d = new FileWriter(mapFileName);
+            map2d.write(map.getWidth() + "," + map.getHeight() + "\n");
 
-        if (map == null) {
-            System.out.println("Error: map is null! Nothing to save.");
-            return;
-        }
-
-        int w = map.getWidth();
-        int h = map.getHeight();
-
-        try (PrintWriter writer = new PrintWriter(mapFileName)) {
-            // Save width and height first
-            writer.println(w + " " + h);
-
-            // Save each pixel
-            for (int y = 0; y < h; y++) {          // row by row
-                for (int x = 0; x < w; x++) {
-                    Integer pixel = map.getPixel(x, y);
-                    int v = (pixel != null) ? pixel : 0; // default black if null
-                    writer.print(v);
-                    if (x < w - 1) writer.print(" ");  // space between pixels
+            for (int i = 0; i < map.getHeight(); i++) {
+                for (int j = 0; j < map.getWidth(); j++) {
+                    map2d.write(map.getPixel(j, i) + " ");
                 }
-                writer.println(); // new line for next row
+
+                map2d.write("\n");
             }
 
-            System.out.println("Map saved to " + mapFileName);
-
+            map2d.close();
         } catch (IOException e) {
-            throw new IOException("Error saving map")
+            System.err.println("Error saving map: " + e.getMessage());
         }
-
     }
 
 
 
-    public static void main(String[] a) {
-
-
-
+  /*  public static void main(String[] a) {
         String mapFile = "map.txt";
         Map2D map = loadMap(mapFile);
         drawMap(map);
+    }
+
+   */
+
+
+    public static void main(String[] args) {
+        Map2D map = new Map(20,20,0);
+        int mode=0;
+        char w ='p';
+        Pixel2D p1 = null;
+        Pixel2D s = null;
+        Pixel2D e = null;
+        while(true) {
+            StdDraw.clear();
+            drawMap(map);
+            if(StdDraw.hasNextKeyTyped()) {
+            char n = StdDraw.nextKeyTyped();
+            if(n == 'p') {
+                w='p';
+            }
+            if(n == 'f') {
+                w='f';
+            }
+            if(n == 's') {
+                w='s';
+            }
+            if(n == 'e') {
+                w='e';
+            }
+            if(n == 'c') {
+                w='c';
+            }
+            if(n == 'r') {
+                w='r';
+            }
+            if(n == '0') {
+                Pixel2D[] shortestPath = map.shortestPath(s,e,-1,false);
+                if(shortestPath != null) {
+                    for(int i=0;i<shortestPath.length;i++) {
+                        map.setPixel(shortestPath[i],3);
+                    }
+                }
+            }
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        String fileName = "test_map.txt";
+
+        // 1. Create or Load the map
+        // For this example, let's load the map we saved previously
+        Map2D myMap = loadMap(fileName);
+
+        if (myMap != null) {
+            System.out.println("Map loaded successfully. Drawing map...");
+
+            // 2. Call drawMap to visualize the grid
+            drawMap(myMap);
+
+            // Optional: Keep the window open or print confirmation
+            System.out.println("Map dimensions: " + myMap.getWidth() + "x" + myMap.getHeight());
+        } else {
+            System.err.println("Could not load the map. Make sure " + fileName + " exists.");
+        }
     }
 
 }
