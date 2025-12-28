@@ -74,6 +74,10 @@ public class Map implements Map2D, Serializable{
                 }
         }
 
+    /**
+     *
+     * @return
+     */
 	@Override
 	public int[][] getMap() {
         if (map==null) return null;

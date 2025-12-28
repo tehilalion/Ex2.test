@@ -16,7 +16,6 @@ import java.util.Scanner;
 public class Ex2_GUI {
 
 
-
     /**
      * this method translates the data into a picture.
      * we do this by first finding the width and height of the map
@@ -25,20 +24,16 @@ public class Ex2_GUI {
      * we set our color
      * then we draw our pixels
      * StdDraw centers squares, so we add 0.5 to x and y to fill the grid cell (0,0) to (1,1)
+     *
      * @param map
      */
 
 
-     public static void drawMap(Map2D map) {
+    public static void drawMap(Map2D map) {
         if (map == null) return;
 
         int w = map.getWidth();
         int h = map.getHeight();
-
-         StdDraw.setCanvasSize(300, 300);
-         StdDraw.setXscale(0, w);
-         StdDraw.setYscale(0, h);
-         StdDraw.enableDoubleBuffering();
 
         for (int x = 0; x < w; x++) {
             for (int y = 0; y < h; y++) {
@@ -65,12 +60,14 @@ public class Ex2_GUI {
         StdDraw.show();
     }
 
-    /** this saves a map to test file
+    /**
+     * this saves a map to test file
+     *
      * @param mapFileName
      * @return
      */
     public static Map2D loadMap(String mapFileName) {
-        Map2D ans=null;
+        Map2D ans = null;
         try {
             FileReader fr = new FileReader(mapFileName);
             Scanner sc = new Scanner(fr);
@@ -98,7 +95,8 @@ public class Ex2_GUI {
 
 
     /**
-     *this saves OUR map to test file.
+     * this saves OUR map to test file.
+     *
      * @param map
      * @param mapFileName
      */
@@ -133,75 +131,109 @@ public class Ex2_GUI {
 
 
     public static void main(String[] args) {
-        Map2D map = new Map(20,20,0);
-        int mode=0;
-        char w ='p';
+        Map2D map = new Map(20, 20, 0);
+        StdDraw.setCanvasSize(300, 300);
+        StdDraw.setXscale(0, map.getWidth());
+        StdDraw.setYscale(0, map.getHeight());
+        StdDraw.enableDoubleBuffering();
+
+        char w = 'p';
         Pixel2D p1 = null;
         Pixel2D s = null;
         Pixel2D e = null;
-        while(true) {
+        while (true) {
             StdDraw.clear();
             drawMap(map);
-            if(StdDraw.hasNextKeyTyped()) {
-            char n = StdDraw.nextKeyTyped();
-            if(n == 'p') {
-                w='p';
+            if (StdDraw.hasNextKeyTyped()) {
+                char n = StdDraw.nextKeyTyped();
+                if (n == 'p') {
+                    w = 'p';
+                }
+                if (n == 'f') {
+                    w = 'f';
+                }
+                if (n == 's') {
+                    w = 's';
+                }
+                if (n == 'e') {
+                    w = 'e';
+                }
+                if (n == 'c') {
+                    w = 'c';
+                }
+                if (n == 'r') {
+                    w = 'r';
+                }
+                if (n == '0') {
+                    Pixel2D[] shortestPath = map.shortestPath(s, e, -1, false);
+                    if (shortestPath != null) {
+                        for (int i = 0; i < shortestPath.length; i++) {
+                            map.setPixel(shortestPath[i], 3);
+                        }
+                    }
+                }
+                if (n == ' ') {
+                    map.init(20, 20, 0);
+                    p1 = null;
+                    s = null;
+                    e = null;
+                }
+                if (n == 'a') {
+                    saveMap(map, "map.txt");
+                }
+                if (n == 'd') {
+                    Map2D newmap = loadMap("map.txt");
+                    if (newmap != null) {
+                        map = newmap;
+                    }
+                }
+
             }
-            if(n == 'f') {
-                w='f';
-            }
-            if(n == 's') {
-                w='s';
-            }
-            if(n == 'e') {
-                w='e';
-            }
-            if(n == 'c') {
-                w='c';
-            }
-            if(n == 'r') {
-                w='r';
-            }
-            if(n == '0') {
-                Pixel2D[] shortestPath = map.shortestPath(s,e,-1,false);
-                if(shortestPath != null) {
-                    for(int i=0;i<shortestPath.length;i++) {
-                        map.setPixel(shortestPath[i],3);
+
+            if (StdDraw.isMousePressed()) {
+                Pixel2D p0 = new Index2D((int) StdDraw.mouseX(), (int) StdDraw.mouseY());
+                if (map.isInside(p0)) {
+                    StdDraw.pause(300);
+                    if (w == 'p') {
+                        map.setPixel(p0, -1);
+                    }
+                    if (w == 'f') {
+                        map.fill(p0, 0, false);
+                    }
+                    if (w == 's') {
+                        s = p0;
+                        map.setPixel(s, 2);
+                    }
+                    if (w == 'e') {
+                        e = p0;
+                        map.setPixel(e, 3);
+                    }
+                    if (w == 'l') {
+                        if (p1 == null) p1 = p0;
+                        else {
+                            map.drawLine(p1, p0, -1);
+                            p1 = null;
+                        }
+                    }
+                    if (w == 'c') {
+                        if (p1 == null) p1 = p0;
+                        else {
+                            map.drawCircle(p1, p1.distance2D(p0), -1);
+                            p1 = null;
+                        }
+                    }
+                    if (w == 'r') {
+                        if (p1 == null) p1 = p0;
+                        else {
+                            map.drawRect(p1, p0, -1);
+                            p1 = null;
+                        }
                     }
                 }
             }
-            }
-
+            StdDraw.show();
         }
 
 
-
-
-
-
-
-
-
-
-
-
-        String fileName = "test_map.txt";
-
-        // 1. Create or Load the map
-        // For this example, let's load the map we saved previously
-        Map2D myMap = loadMap(fileName);
-
-        if (myMap != null) {
-            System.out.println("Map loaded successfully. Drawing map...");
-
-            // 2. Call drawMap to visualize the grid
-            drawMap(myMap);
-
-            // Optional: Keep the window open or print confirmation
-            System.out.println("Map dimensions: " + myMap.getWidth() + "x" + myMap.getHeight());
-        } else {
-            System.err.println("Could not load the map. Make sure " + fileName + " exists.");
-        }
     }
-
 }
