@@ -195,18 +195,18 @@ public class Ex2_GUI {
                 if (map.isInside(p0)) {
                     StdDraw.pause(300);
                     if (w == 'p') {
-                        map.setPixel(p0, -1);
+                        map.setPixel(p0, -2);
                     }
                     if (w == 'f') {
-                        map.fill(p0, 0, false);
+                        map.fill(p0, 3, false);
                     }
                     if (w == 's') {
                         s = p0;
-                        map.setPixel(s, 2);
+                        map.setPixel(s, 1);
                     }
                     if (w == 'e') {
                         e = p0;
-                        map.setPixel(e, 3);
+                        map.setPixel(e, 2);
                     }
                     if (w == 'l') {
                         if (p1 == null) p1 = p0;
