@@ -15,8 +15,11 @@ class MapTest {
     private Map2D _m0, _m1, _m3_3;
 
     @BeforeEach
-    public void setuo() {
+    public void setup() {
+
         _m3_3 = new Map(_map_3_3);
+        _m0 = new Map(_map_3_3);
+        _m1 = new Map(20,25,16);
     }
 
     @Test
