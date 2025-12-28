@@ -12,9 +12,7 @@ import java.util.Scanner;
  *
  */
 
-
 public class Ex2_GUI {
-
 
     /**
      * this method translates the data into a picture.
@@ -51,6 +49,9 @@ public class Ex2_GUI {
                 }
                 if (map.getPixel(x, y) == 3) {
                     StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
+                }
+                if (map.getPixel(x, y) == 4) {
+                    StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
                 }
                 StdDraw.filledSquare(x + 0.5, y + 0.5, 0.5);
                 StdDraw.setPenColor(StdDraw.BLACK);
@@ -121,18 +122,9 @@ public class Ex2_GUI {
 
 
 
-  /*  public static void main(String[] a) {
-        String mapFile = "map.txt";
-        Map2D map = loadMap(mapFile);
-        drawMap(map);
-    }
-
-   */
-
-
     public static void main(String[] args) {
         Map2D map = new Map(20, 20, 0);
-        StdDraw.setCanvasSize(300, 300);
+        StdDraw.setCanvasSize(450, 450);
         StdDraw.setXscale(0, map.getWidth());
         StdDraw.setYscale(0, map.getHeight());
         StdDraw.enableDoubleBuffering();
@@ -141,34 +133,22 @@ public class Ex2_GUI {
         Pixel2D p1 = null;
         Pixel2D s = null;
         Pixel2D e = null;
+        boolean mouseWasDown = false;
         while (true) {
             StdDraw.clear();
             drawMap(map);
             if (StdDraw.hasNextKeyTyped()) {
                 char n = StdDraw.nextKeyTyped();
-                if (n == 'p') {
-                    w = 'p';
+                if (n == 'p'|| n == 'f' || n == 's' || n == 'e' || n == 'c' || n == 'r' || n == 'l') {
+                    w=n;
+                    p1=null;
                 }
-                if (n == 'f') {
-                    w = 'f';
-                }
-                if (n == 's') {
-                    w = 's';
-                }
-                if (n == 'e') {
-                    w = 'e';
-                }
-                if (n == 'c') {
-                    w = 'c';
-                }
-                if (n == 'r') {
-                    w = 'r';
-                }
-                if (n == '0') {
-                    Pixel2D[] shortestPath = map.shortestPath(s, e, -1, false);
+
+                if (n == '0' && s!=null && e != null) {
+                    Pixel2D[] shortestPath = map.shortestPath(s, e, 4, false);
                     if (shortestPath != null) {
                         for (int i = 0; i < shortestPath.length; i++) {
-                            map.setPixel(shortestPath[i], 3);
+                            map.setPixel(shortestPath[i], 4);
                         }
                     }
                 }
@@ -190,10 +170,10 @@ public class Ex2_GUI {
 
             }
 
-            if (StdDraw.isMousePressed()) {
+            boolean mouseIsDown = StdDraw.isMousePressed();
+            if (mouseIsDown && !mouseWasDown) {
                 Pixel2D p0 = new Index2D((int) StdDraw.mouseX(), (int) StdDraw.mouseY());
                 if (map.isInside(p0)) {
-                    StdDraw.pause(300);
                     if (w == 'p') {
                         map.setPixel(p0, -2);
                     }
@@ -211,29 +191,30 @@ public class Ex2_GUI {
                     if (w == 'l') {
                         if (p1 == null) p1 = p0;
                         else {
-                            map.drawLine(p1, p0, -1);
+                            map.drawLine(p1, p0, 3);
                             p1 = null;
                         }
                     }
                     if (w == 'c') {
                         if (p1 == null) p1 = p0;
                         else {
-                            map.drawCircle(p1, p1.distance2D(p0), -1);
+                            map.drawCircle(p1, p1.distance2D(p0), 3);
                             p1 = null;
                         }
                     }
                     if (w == 'r') {
                         if (p1 == null) p1 = p0;
                         else {
-                            map.drawRect(p1, p0, -1);
+                            map.drawRect(p1, p0, 3);
                             p1 = null;
                         }
                     }
                 }
             }
+            mouseWasDown = mouseIsDown;
             StdDraw.show();
+
+            StdDraw.pause(10);
         }
-
-
     }
-}
+    }

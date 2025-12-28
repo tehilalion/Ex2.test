@@ -141,12 +141,9 @@ public class Map implements Map2D, Serializable{
 
     @Override
     public boolean sameDimensions(Map2D p) {
-        boolean ans = true;
-        if (this.getWidth()!=p.getWidth() && this.getHeight()!=p.getHeight()) {
-            return false;
-        }
+        return this.getWidth() == p.getWidth()
+                && this.getHeight() == p.getHeight();
 
-        return ans;
     }
 
     @Override // check the sameDimesions
@@ -203,46 +200,71 @@ public class Map implements Map2D, Serializable{
 
     }
 
+private void drawHorizontalLine(Pixel2D p1, Pixel2D p2, int color) {
+    int x1 = p1.getX(), y1 = p1.getY();
+    int x2 = p2.getX(), y2 = p2.getY();
 
-    private void drawHorizontalLine(Pixel2D p1, Pixel2D p2, int color) {
-        double m = (double)(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
-        for (int x = p1.getX(); x <= p2.getX(); x++) {
-            double exactY = p1.getY() + m * (x - p1.getX());
-            int roundedY = (int) Math.round(exactY);
+    int dx = x2 - x1;
+    int dy = y2 - y1;
+    double m = (double) dy / dx;
+
+    for (int x = x1; x <= x2; x++) {
+        double exactY = y1 + m * (x - x1);
+        int roundedY = (int) Math.round(exactY);
+
+        if (isInside(x, roundedY)) {
             setPixel(new Index2D(x, roundedY), color);
         }
     }
+}
+
     private void drawVerticalLine(Pixel2D p1, Pixel2D p2, int color) {
-        double m2= (double)(p2.getX() - p1.getX()) / (p2.getY() - p1.getY());
-        for (int y = p1.getY(); y <= p2.getY(); y++) {
-            double exactX = p1.getX() + m2 * (y - p1.getY());
+        int x1 = p1.getX(), y1 = p1.getY();
+        int x2 = p2.getX(), y2 = p2.getY();
+
+
+        int dx = x2 - x1;
+        int dy = y2 - y1;
+        double m_inv = (double) dx / dy;
+
+        for (int y = y1; y <= y2; y++) {
+            double exactX = x1 + m_inv * (y - y1);
             int roundedX = (int) Math.round(exactX);
-            setPixel(new Index2D(roundedX, y), color);
+
+            if (isInside(roundedX, y)) {
+                setPixel(new Index2D(roundedX, y), color);
+            }
         }
     }
+
     @Override
     public void drawLine(Pixel2D p1, Pixel2D p2, int newcolor) {
-        int dx = Math.abs(p2.getX() - p1.getX());
-        int dy = Math.abs(p2.getY() - p1.getY());
-        if (p1.getX() == p2.getX() && p1.getY() == p2.getY()) {
-            setPixel(p1, newcolor);
+
+        if (p1.equals(p2)) {
+            if (isInside(p1.getX(), p1.getY())) {
+                setPixel(p1, newcolor);
+            }
             return;
         }
+
+        int dx = Math.abs(p2.getX() - p1.getX());
+        int dy = Math.abs(p2.getY() - p1.getY());
+
         if (dx >= dy) {
-            if (p1.getX() < p2.getX()) {
+            if (p1.getX() <= p2.getX()) {
                 drawHorizontalLine(p1, p2, newcolor);
             } else {
                 drawHorizontalLine(p2, p1, newcolor);
             }
-        }
-            else{
-                if (p1.getY() < p2.getY()) {
-                    drawVerticalLine(p1, p2, newcolor);
-                } else {
-                    drawVerticalLine(p2, p1, newcolor);
-                }
+        } else {
+            if (p1.getY() <= p2.getY()) {
+                drawVerticalLine(p1, p2, newcolor);
+            } else {
+                drawVerticalLine(p2, p1, newcolor);
             }
         }
+    }
+
 
 
     @Override
