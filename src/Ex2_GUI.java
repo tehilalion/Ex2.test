@@ -51,7 +51,7 @@ public class Ex2_GUI {
                     StdDraw.setPenColor(StdDraw.BOOK_LIGHT_BLUE);
                 }
                 if (map.getPixel(x, y) == 4) {
-                    StdDraw.setPenColor(StdDraw.PRINCETON_ORANGE);
+                    StdDraw.setPenColor(StdDraw.MAGENTA);
                 }
                 StdDraw.filledSquare(x + 0.5, y + 0.5, 0.5);
                 StdDraw.setPenColor(StdDraw.BLACK);
@@ -148,7 +148,7 @@ public class Ex2_GUI {
                     p1=null;
                 }
                 if (n == '0' && s!=null && e != null) {
-                    Pixel2D[] shortestPath = map.shortestPath(s, e, 4, false);
+                    Pixel2D[] shortestPath = map.shortestPath(s, e, 3, false);
                     if (shortestPath != null) {
                         for (int i = 0; i < shortestPath.length; i++) {
                             map.setPixel(shortestPath[i], 4);
