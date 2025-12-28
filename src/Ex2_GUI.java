@@ -62,7 +62,7 @@ public class Ex2_GUI {
     }
 
     /**
-     * this saves a map to test file
+     * this saves a map to test file so we can load it back again
      *
      * @param mapFileName
      * @return
@@ -120,7 +120,11 @@ public class Ex2_GUI {
         }
     }
 
-
+    /**
+     * this main implements all algorithms in order to see the visual map
+     * using StdDraw class
+     * @param args
+     */
 
     public static void main(String[] args) {
         Map2D map = new Map(20, 20, 0);
@@ -143,7 +147,6 @@ public class Ex2_GUI {
                     w=n;
                     p1=null;
                 }
-
                 if (n == '0' && s!=null && e != null) {
                     Pixel2D[] shortestPath = map.shortestPath(s, e, 4, false);
                     if (shortestPath != null) {
@@ -169,7 +172,6 @@ public class Ex2_GUI {
                 }
 
             }
-
             boolean mouseIsDown = StdDraw.isMousePressed();
             if (mouseIsDown && !mouseWasDown) {
                 Pixel2D p0 = new Index2D((int) StdDraw.mouseX(), (int) StdDraw.mouseY());
