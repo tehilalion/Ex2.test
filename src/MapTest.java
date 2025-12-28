@@ -22,6 +22,11 @@ class MapTest {
         _m1 = new Map(20,25,16);
     }
 
+    /**
+     * Tests the init method with a large array.
+     * Verifies that width, height are updated correctly
+     * and that fill works after initialization.
+     */
     @Test
     @Timeout(value = 1, unit = SECONDS)
     void init() {
@@ -33,6 +38,10 @@ class MapTest {
         _m1.fill(p1, 1, true);
     }
 
+    /**
+     * Tests that initializing two maps with the same array
+     * results in equal maps.
+     */
     @Test
     void testInit() {
         _m0.init(_map_3_3);
@@ -40,7 +49,11 @@ class MapTest {
         assertEquals(_m0, _m1);
     }
 
-    @Test
+    /**
+     *  Tests the isInside method with points that are:
+     *   inside the map, on the edge, and outside the map.
+     */
+     @Test
     void testIsInside() {
         // Assuming a 10x10 map
         Index2D inside = new Index2D(5, 5);
@@ -49,6 +62,10 @@ class MapTest {
         Index2D outsideY = new Index2D(5, -1);
     }
 
+    /**
+     *  Tests that getMap returns a deep copy of the map
+     *   and not a reference to the internal array.
+     */
     @Test
     void getMap() {
         Map m = new Map(2, 2, 5);
@@ -60,18 +77,27 @@ class MapTest {
         assertEquals(5, m.getPixel(0, 0));
     }
 
+    /**
+     * Tests that getWidth returns the correct width of the map.
+     */
     @Test
     void getWidth() {
         Map m = new Map(4, 7, 0);
         assertEquals(4, m.getWidth());
     }
 
+    /**
+     * Tests that getHeight returns the correct Height of the map
+     */
     @Test
     void getHeight() {
         Map m = new Map(4, 7, 0);
         assertEquals(7, m.getHeight());
     }
 
+    /**
+     *Tests getting a pixel value after setting it  using coordinates
+     */
     @Test
     void getPixel() {
         Map m = new Map(3, 3, 0);
@@ -79,7 +105,9 @@ class MapTest {
         assertEquals(9, m.getPixel(1, 1));
     }
 
-
+    /**
+     *Tests setting a pixel value using x,y coordinates.
+     */
     @Test
     void setPixel() {
         Map m = new Map(3, 3, 0);
@@ -87,6 +115,9 @@ class MapTest {
         assertEquals(7, m.getPixel(1, 2));
     }
 
+    /**
+     *Tests setting a pixel value using a Pixel2D object.
+     */
     @Test
     void testSetPixel() {
         Map m = new Map(3, 3, 0);
@@ -95,7 +126,10 @@ class MapTest {
         assertEquals(4, m.getPixel(p));
     }
 
-
+    /**
+     *Tests the sameDimensions method.
+     * Verifies true for maps with identical dimensions and false otherwise.
+     */
     @Test
     void sameDimensions() {
         Map a = new Map(3, 3, 1);
@@ -105,6 +139,10 @@ class MapTest {
         assertFalse(a.sameDimensions(c));
     }
 
+    /**
+     *Tests addMap2D by adding another map's values
+     *  to the current map.
+     */
     @Test
     void addMap2D() {
         Map a = new Map(2, 2, 1);
@@ -114,6 +152,9 @@ class MapTest {
         assertEquals(4, a.getPixel(1, 1));
     }
 
+    /**
+     *  Tests the mul method by multiplying all pixel values by scalar
+     */
     @Test
     void mul() {
         Map m = new Map(2, 2, 4);
@@ -122,6 +163,11 @@ class MapTest {
 
     }
 
+    /**
+     *Tests the rescale method.
+     * Verifies that the map size changes correctly
+     * and pixel positions are scaled properly.
+     */
     @Test
     void rescale() {
         Map m = new Map(2, 2, 1);
@@ -132,6 +178,10 @@ class MapTest {
         assertEquals(9, m.getPixel(2, 2));
     }
 
+    /**
+     *Tests drawing a circle on the map.
+     * Verifies that pixels inside the circle are colored and pixels outside remain unchanged.
+     */
     @Test
     void drawCircle() {
         Map m = new Map(7, 7, 0);
@@ -142,6 +192,10 @@ class MapTest {
         assertEquals(0, m.getPixel(0, 0));
     }
 
+    /**
+     *Tests drawing a diagonal line from (0,0) to (4,4).
+     * Verifies that all diagonal pixels are colored.
+     */
     @Test
     void drawLine() {
         Map m = new Map(5, 5, 0);
@@ -151,6 +205,10 @@ class MapTest {
         }
     }
 
+    /**
+     *Tests drawing a rectangle between two points.
+     * Verifies that pixels inside the rectangle are filled.
+     */
     @Test
     void drawRect() {
         Map m = new Map(5, 5, 0);
@@ -160,6 +218,11 @@ class MapTest {
         assertEquals(8, m.getPixel(3, 3));
     }
 
+    /**
+     *Tests the fill (flood fill) method.
+     * Verifies that connected pixels are filled correctly
+     * without overriding blocked pixels.
+     */
     @Test
     void fill() {
         Map m = new Map(4, 4, 1);
@@ -169,6 +232,10 @@ class MapTest {
         assertEquals(9, m.getPixel(2, 2));
     }
 
+    /**
+     *Tests the shortestPath method.
+     *Verifies that a valid path is returned with correct start and end points.
+     */
     @Test
     void shortestPath() {
         Map m = new Map(3, 3, 0);
@@ -184,6 +251,10 @@ class MapTest {
         assertEquals(new Index2D(2, 2), path[4]);
     }
 
+    /**
+     *Tests the allDistance method.
+     *  Verifies that the distance map contains correct shortest distances from the source pixel.
+     */
     @Test
     void allDistance() {
         Map m = new Map(3, 3, 0);
