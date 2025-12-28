@@ -8,7 +8,7 @@ public class Index2D implements Pixel2D {
     }
 
     /** copy constructor
-     *
+     *Creates a new Index2D with the same coordinates as another Pixel2D.
      * @param other
      */
     public Index2D(Pixel2D other) {
@@ -19,6 +19,10 @@ public class Index2D implements Pixel2D {
         this.y = other.getY();
     }
 
+    /**
+     *Returns the x coordinate of this pixel.
+     * @return
+     */
 
     @Override
     public int getX() {
@@ -26,13 +30,22 @@ public class Index2D implements Pixel2D {
         return this.x;
     }
 
+    /**
+     * Returns the y coordinate of this pixel.
+     * @return
+     */
     @Override
     public int getY() {
 
         return this.y;
     }
-    // checks the distance between two pixels using the Pythagorean theorem.
-    // Throws runtime exception if null
+
+    /**
+     * checks the distance between two pixels using the Pythagorean theorem.
+     *  Throws runtime exception if null
+     * @param p2
+     * @return
+     */
     @Override
     public double distance2D(Pixel2D p2) {
         double dx = this.x- p2.getX();
@@ -45,6 +58,10 @@ public class Index2D implements Pixel2D {
         return Math.sqrt(t);
     }
 
+    /**
+     * Returns a string representation of this pixel in the form "x,y".
+     * @return
+     */
     @Override
     public String toString() {
         //String ans = null;
@@ -52,6 +69,12 @@ public class Index2D implements Pixel2D {
         return ans;
     }
 
+    /**
+     * Checks whether this pixel is equal to another object.
+     * Two pixels are equal if they have the same x and y coordinates.
+     * @param p the reference object with which to compare.
+     * @return
+     */
     @Override
     public boolean equals(Object p) {
         if (this == p){

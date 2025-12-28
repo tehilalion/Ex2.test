@@ -180,7 +180,7 @@ public class Ex2_GUI {
                         map.setPixel(p0, -2);
                     }
                     if (w == 'f') {
-                        map.fill(p0, 3, false);
+                        map.fill(p0, -2, false);
                     }
                     if (w == 's') {
                         s = p0;
