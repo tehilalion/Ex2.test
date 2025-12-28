@@ -36,7 +36,6 @@ public class Index2D implements Pixel2D {
      */
     @Override
     public int getY() {
-
         return this.y;
     }
 
